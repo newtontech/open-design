@@ -27,19 +27,19 @@ CONFIG = {
   "mode": "comments",
   "comment_rules": [
     {
-      "regex": "MLP|pij|rij|K",
+      "regex": "\\b(?:pij0?|rij|MLP)\\b|\\bK\\b",
       "message": "Please define MLP, K, the kernel index, and distance term around this equation."
     },
     {
-      "regex": "Latom|Pai|hi",
+      "regex": "\\b(?:Latom|Pai|hi0?)\\b",
       "message": "Please define the atom loss variables and representation terms around this equation."
     },
     {
-      "regex": "Ltotal|Lcoord|Lnorm",
+      "regex": "\\b(?:Ltotal|Lcoord|Lnorm|λcoord|λnorm)\\b",
       "message": "Please define each loss term and weighting coefficient in the total objective."
     },
     {
-      "regex": "LMSE|fQSPR|RXi",
+      "regex": "\\b(?:LMSE|fQSPR|RXi)\\b",
       "message": "Please define each variable in the QSPR loss or residual objective."
     },
     {
@@ -180,6 +180,13 @@ def in_references_state(text, active):
     if re.fullmatch(r'(references|bibliography)', text, re.I): return True
     return active
 
+def is_formula_context(text):
+    if re.search(r'[=≔∈∑λγμΔτ]', text):
+        return True
+    if re.search(r'\b(?:pij0?|rij|Latom|Lcoord|Lnorm|Ltotal|LMSE|fQSPR|RXi)\b', text):
+        return True
+    return False
+
 def detect(paras):
     findings=[]; mode=CONFIG['mode']; ref_active=False; seen_defs={}
     for i,p in enumerate(paras):
@@ -204,6 +211,8 @@ def detect(paras):
                 elif phrase.lower() in low and phrase.lower() in seen_defs:
                     findings.append(Finding('replace',i,text[:220],f'Use {abbr} after it has been defined.', phrase, abbr, 'abbreviation'))
         elif mode == 'comments':
+            if ref_active or is_caption(text) or not is_formula_context(text):
+                continue
             for item in CONFIG.get('comment_rules',[]):
                 scope=item.get('scope','all')
                 if scope == 'caption' and not is_caption(text): continue
