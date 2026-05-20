@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Figure Caption Explanation"
+  short_description: "Check figure panel explanations."
+  default_prompt: "Check this DOCX for figure captions that do not explain each panel clearly."
