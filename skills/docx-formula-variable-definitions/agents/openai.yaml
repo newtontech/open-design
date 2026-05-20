@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Formula Variable Definitions"
+  short_description: "Check formula variable definitions."
+  default_prompt: "Check this DOCX for formula variables and loss terms that lack definitions."
