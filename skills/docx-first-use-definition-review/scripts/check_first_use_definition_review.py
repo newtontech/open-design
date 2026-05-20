@@ -47,6 +47,19 @@ CONFIG = {
   "display_name": "DOCX First Use Definition Review"
 }
 
+TERM_DEFINITIONS = {
+    "KRFP": ["kernel regression fingerprint", "klekota-roth fingerprint"],
+    "QSPR": ["quantitative structure-property relationship", "quantitative structure property relationship"],
+    "PSC": ["perovskite solar cell"],
+    "PCE": ["power conversion efficiency"],
+    "DFT": ["density functional theory"],
+    "SHAP": ["shapley additive explanations", "shapley additive explanation"],
+    "UMAP": ["uniform manifold approximation"],
+    "ESP": ["electrostatic potential"],
+    "SEM": ["scanning electron microscopy", "scanning electron microscope"],
+    "ns-PPPc": ["ns-pppc"],
+}
+
 @dataclass
 class Finding:
     kind: str
@@ -175,8 +188,19 @@ def in_references_state(text, active):
     if re.fullmatch(r'(references|bibliography)', text, re.I): return True
     return active
 
+def term_is_defined(term, text):
+    low = text.lower()
+    if any(phrase in low for phrase in TERM_DEFINITIONS.get(term, [])):
+        return True
+    return bool(re.search(r'\([^)]+\b' + re.escape(term.lower()) + r's?\b[^)]*\)', low))
+
+def term_pattern(term):
+    if term.isupper():
+        return r'\b' + re.escape(term) + r's?\b'
+    return re.escape(term)
+
 def detect(paras):
-    findings=[]; mode=CONFIG['mode']; ref_active=False; seen_defs={}
+    findings=[]; mode=CONFIG['mode']; ref_active=False; seen_defs={}; reported_terms=set()
     for i,p in enumerate(paras):
         text=para_text(p); low=text.lower()
         if not text: continue
@@ -206,7 +230,15 @@ def detect(paras):
                 if scope == 'not_references' and ref_active: continue
                 matched=False
                 if 'contains' in item: matched=all(s.lower() in low for s in item['contains'])
-                if 'any_contains' in item: matched=any(s.lower() in low for s in item['any_contains'])
+                if 'any_contains' in item:
+                    terms=[s for s in item['any_contains'] if re.search(term_pattern(s), text)]
+                    terms=[s for s in terms if s not in reported_terms and not term_is_defined(s, text)]
+                    matched=bool(terms)
+                    if matched:
+                        for term in terms:
+                            reported_terms.add(term)
+                        item = dict(item)
+                        item['message'] = item['message'] + ' Terms needing attention here: ' + ', '.join(terms) + '.'
                 if 'regex' in item: matched=re.search(item['regex'], text, re.I) is not None
                 if 'min_words' in item: matched=len(text.split()) >= item['min_words']
                 if matched:
