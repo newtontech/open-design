@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Caption Consistency"
+  short_description: "Fix inconsistent caption panel labels."
+  default_prompt: "Check this DOCX for inconsistent figure caption panel marker styles and apply tracked changes to normalize them."
