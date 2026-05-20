@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Unit Symbol Consistency"
+  short_description: "Normalize DOCX unit symbols."
+  default_prompt: "Check this DOCX for inconsistent unit symbols and apply tracked changes."
