@@ -32,6 +32,7 @@ CONFIG = {
     },
     {
       "regex": "\\b(Fig\\.|Figure|Table|Supplementary Table)\\s+\\d+",
+      "scope": "conclusion",
       "message": "Conclusions typically synthesize the message without introducing new figure or table citations."
     }
   ],
@@ -168,11 +169,21 @@ def in_references_state(text, active):
     if re.fullmatch(r'(references|bibliography)', text, re.I): return True
     return active
 
+def is_conclusion_heading(text):
+    return re.fullmatch(r'conclusions?|summary and outlook', text, re.I) is not None
+
+def is_major_heading(text):
+    return re.fullmatch(r'(abstract|introduction|results?|discussion|methods?|acknowledgments?|author contributions?|references|bibliography|supplementary information)', text, re.I) is not None
+
 def detect(paras):
-    findings=[]; mode=CONFIG['mode']; ref_active=False; seen_defs={}
+    findings=[]; mode=CONFIG['mode']; ref_active=False; seen_defs={}; conclusion_active=False
     for i,p in enumerate(paras):
         text=para_text(p); low=text.lower()
         if not text: continue
+        if is_conclusion_heading(text):
+            conclusion_active=True
+        elif conclusion_active and is_major_heading(text):
+            conclusion_active=False
         ref_active=in_references_state(text, ref_active)
         if mode == 'replacements':
             for item in CONFIG.get('replacements',[]):
@@ -197,6 +208,7 @@ def detect(paras):
                 if scope == 'caption' and not is_caption(text): continue
                 if scope == 'references' and not ref_active: continue
                 if scope == 'not_references' and ref_active: continue
+                if scope == 'conclusion' and not conclusion_active: continue
                 matched=False
                 if 'contains' in item: matched=all(s.lower() in low for s in item['contains'])
                 if 'any_contains' in item: matched=any(s.lower() in low for s in item['any_contains'])
