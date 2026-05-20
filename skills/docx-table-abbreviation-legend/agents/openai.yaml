@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Table Abbreviation Legend"
+  short_description: "Find unexplained table abbreviations."
+  default_prompt: "Check this DOCX for table or descriptor lists with unexplained abbreviations."
