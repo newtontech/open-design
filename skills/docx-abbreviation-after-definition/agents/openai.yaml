@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Abbreviation After Definition"
+  short_description: "Use abbreviations after definition."
+  default_prompt: "Check this DOCX for repeated full terms after abbreviation definition."
