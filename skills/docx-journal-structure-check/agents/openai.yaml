@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Journal Structure Check"
+  short_description: "Check journal structure issues."
+  default_prompt: "Check this DOCX for TOC, conclusion citations, and journal-style structure issues."
