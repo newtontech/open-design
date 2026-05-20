@@ -190,6 +190,8 @@ def detect(paras):
                         base, exp = re.split('e', old, flags=re.I); new=f'{base} x 10^{int(exp)}'
                     findings.append(Finding('replace',i,text[:220],item.get('message','Normalize this expression.'),old,new,item.get('category','regex')))
         elif mode == 'abbrev':
+            if ref_active:
+                continue
             for item in CONFIG['definitions']:
                 phrase=item['phrase']; abbr=item['abbr']
                 if phrase.lower()+f' ({abbr.lower()})' in low: seen_defs[phrase.lower()]=abbr
