@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Author Contribution Detail"
+  short_description: "Check author contribution detail."
+  default_prompt: "Check this DOCX for overly generic author contribution statements."
