@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Typographic Quotes"
+  short_description: "Normalize DOCX quotes."
+  default_prompt: "Check this DOCX for inconsistent apostrophes and quotation marks."
