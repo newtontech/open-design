@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Compound Hyphenation"
+  short_description: "Fix compound modifiers."
+  default_prompt: "Check this DOCX for missing hyphenation in compound modifiers and apply tracked changes."
