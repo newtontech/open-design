@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Long Paragraph Splitter"
+  short_description: "Flag overlong paragraphs."
+  default_prompt: "Check this DOCX for long paragraphs that combine setup, result, and interpretation."
