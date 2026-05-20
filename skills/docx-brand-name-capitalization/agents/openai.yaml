@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Brand Name Capitalization"
+  short_description: "Fix official names in DOCX."
+  default_prompt: "Check this DOCX for inconsistent database, supplier, software, and brand capitalization."
