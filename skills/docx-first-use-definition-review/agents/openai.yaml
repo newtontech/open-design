@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX First Use Definition Review"
+  short_description: "Find undefined first uses."
+  default_prompt: "Check this DOCX for terms or abbreviations that need a full name and brief explanation at first use."
