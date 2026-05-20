@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Scientific Notation"
+  short_description: "Normalize scientific notation."
+  default_prompt: "Check this DOCX for programming-style scientific notation and apply tracked changes."
