@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Logic Bridge Review"
+  short_description: "Find weak reasoning bridges."
+  default_prompt: "Check this DOCX for result-to-conclusion jumps that need a clearer reasoning bridge."
