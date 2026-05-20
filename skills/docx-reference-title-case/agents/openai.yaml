@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Reference Title Case"
+  short_description: "Fix bibliography title capitalization."
+  default_prompt: "Check this DOCX for inconsistent reference title capitalization and apply tracked changes to match the majority academic style while preserving proper nouns."
