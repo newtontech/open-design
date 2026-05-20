@@ -1,0 +1,4 @@
+interface:
+  display_name: "DOCX Method Rationale Review"
+  short_description: "Find missing method rationale."
+  default_prompt: "Check this DOCX for method choices, thresholds, baselines, or filtering steps that need rationale."
